@@ -11,7 +11,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-
+import { MemoizedMarkdown } from "@/components/memoized-markdown";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { User } from "lucide-react";
 
 export default function Home() {
   const [isConfigured, setIsConfigured] = useState<boolean>(true);
@@ -39,7 +41,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-24">
       <Card className="w-full max-w-3xl">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Omnipop fashion agent</CardTitle>
+          <CardTitle>Curvily fashion agent</CardTitle>
         </CardHeader>
         <CardContent className="h-[60vh] overflow-y-auto space-y-4">
           {!isConfigured ? (
@@ -63,17 +65,45 @@ export default function Home() {
                 key={message.id}
                 className={`flex ${
                   message.role === "user" ? "justify-end" : "justify-start"
-                }`}
+                } gap-3 items-start`}
               >
+                {message.role !== "user" && (
+                  <div className="flex flex-col items-center">
+                    <Avatar className="h-10 w-10 border border-muted">
+                      <AvatarImage
+                        src="https://curvilyfashion.com/wp-content/uploads/2021/03/Snapseed-311134833.jpeg"
+                        alt="Curvily"
+                      />
+                      <AvatarFallback>CV</AvatarFallback>
+                    </Avatar>
+                    <span className="text-xs mt-1 text-muted-foreground">
+                      Curvily
+                    </span>
+                  </div>
+                )}
+
                 <div
-                  className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                  className={`max-w-[75%] rounded-lg px-4 py-2 ${
                     message.role === "user"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted"
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  <MemoizedMarkdown id={message.id} content={message.content} />
                 </div>
+
+                {message.role === "user" && (
+                  <div className="flex flex-col items-center">
+                    <Avatar className="h-10 w-10 bg-primary text-primary-foreground">
+                      <AvatarFallback>
+                        <User size={18} color="#ffffff" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <span className="text-xs mt-1 text-muted-foreground">
+                      You
+                    </span>
+                  </div>
+                )}
               </div>
             ))
           )}
