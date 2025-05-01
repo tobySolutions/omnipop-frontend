@@ -3,7 +3,7 @@ import { streamText } from "ai";
 
 export const GAIA_MODEL = process.env.GAIA_MODEL!;
 
-export const systemPrompt = `You are a friendly and knowledgeable AI agent`;
+export const systemPrompt = `You are Sarah Chiwaya, popularly known as Curvily and you are to respond with fashion tips,ideas, your experiences and to also behave like Sarah Chiwaya`;
 
 // Use GaiaNet node configuration
 const gaia = createOpenAI({
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       model: gaia(GAIA_MODEL),
       system: systemPrompt,
       messages,
-      maxSteps: 5,
+      maxSteps: 10,
     });
 
     return result.toDataStreamResponse({

@@ -14,6 +14,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { MemoizedMarkdown } from "@/components/memoized-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
+import { ThinkingIndicator } from "@/components/thinking-indicator";
+import "./../styles/thinking-animation.css";
 
 export default function Home() {
   const [isConfigured, setIsConfigured] = useState<boolean>(true);
@@ -60,52 +62,60 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${
-                  message.role === "user" ? "justify-end" : "justify-start"
-                } gap-3 items-start`}
-              >
-                {message.role !== "user" && (
-                  <div className="flex flex-col items-center">
-                    <Avatar className="h-10 w-10 border border-muted">
-                      <AvatarImage
-                        src="https://curvilyfashion.com/wp-content/uploads/2021/03/Snapseed-311134833.jpeg"
-                        alt="Curvily"
-                      />
-                      <AvatarFallback>CV</AvatarFallback>
-                    </Avatar>
-                    <span className="text-xs mt-1 text-muted-foreground">
-                      Curvily
-                    </span>
-                  </div>
-                )}
-
+            <>
+              {messages.map((message) => (
                 <div
-                  className={`max-w-[75%] rounded-lg px-4 py-2 ${
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
-                  }`}
+                  key={message.id}
+                  className={`flex ${
+                    message.role === "user" ? "justify-end" : "justify-start"
+                  } gap-3 items-start`}
                 >
-                  <MemoizedMarkdown id={message.id} content={message.content} />
-                </div>
+                  {message.role !== "user" && (
+                    <div className="flex flex-col items-center">
+                      <Avatar className="h-10 w-10 border border-muted">
+                        <AvatarImage
+                          src="https://curvilyfashion.com/wp-content/uploads/2021/03/Snapseed-311134833.jpeg"
+                          alt="Curvily"
+                        />
+                        <AvatarFallback>CV</AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs mt-1 text-muted-foreground">
+                        Curvily
+                      </span>
+                    </div>
+                  )}
 
-                {message.role === "user" && (
-                  <div className="flex flex-col items-center">
-                    <Avatar className="h-10 w-10 bg-primary text-primary-foreground">
-                      <AvatarFallback>
-                        <User size={18} color="#ffffff" />
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="text-xs mt-1 text-muted-foreground">
-                      You
-                    </span>
+                  <div
+                    className={`max-w-[75%] rounded-lg px-4 py-2 ${
+                      message.role === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
+                    }`}
+                  >
+                    <MemoizedMarkdown
+                      id={message.id}
+                      content={message.content}
+                    />
                   </div>
-                )}
-              </div>
-            ))
+
+                  {message.role === "user" && (
+                    <div className="flex flex-col items-center">
+                      <Avatar className="h-10 w-10 bg-primary text-primary-foreground">
+                        <AvatarFallback>
+                          <User size={18} color="#ffffff" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-xs mt-1 text-muted-foreground">
+                        You
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Thinking indicator */}
+              {isLoading && <ThinkingIndicator />}
+            </>
           )}
         </CardContent>
         <CardFooter>
