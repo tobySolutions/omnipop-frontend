@@ -26,6 +26,7 @@ export default function Home() {
     handleInputChange,
     handleSubmit,
     isLoading,
+    error,
     setMessages,
   } = useChat({
     api: "/api/chat",
@@ -115,6 +116,11 @@ export default function Home() {
 
               {/* Thinking indicator */}
               {isLoading && <ThinkingIndicator />}
+              {error && (
+                <p className="text-red-500">
+                  {error.name} : {error.message}
+                </p>
+              )}
             </>
           )}
         </CardContent>
